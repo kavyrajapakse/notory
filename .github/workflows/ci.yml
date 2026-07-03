@@ -1,0 +1,47 @@
+name: NOTORY CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        # Tells the cache where to look for package files
+        cache-dependency-path: |
+          client/package-lock.json
+          server/package-lock.json
+
+    # 1. Validate Backend (Server)
+    - name: Install Server Dependencies
+      working-directory: server
+      run: npm ci
+
+    - name: Lint Server Code
+      working-directory: server
+      run: npm run lint
+
+    # 2. Validate Frontend (Client)
+    - name: Install Client Dependencies
+      working-directory: client
+      run: npm ci
+
+    - name: Lint Client Code
+      working-directory: client
+      run: npm run lint
+
+    - name: Build Client App
+      working-directory: client
+      run: npm run build
