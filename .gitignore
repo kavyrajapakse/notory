@@ -27,3 +27,6 @@ coverage/
 
 # Firebase
 .firebase/
+
+# Firebase Admin SDK Secret
+service-account.json

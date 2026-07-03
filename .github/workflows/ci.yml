@@ -1,6 +1,5 @@
 name: NOTORY CI
 
-# Trigger this workflow on pushes and pull requests to main and develop
 on:
   push:
     branches: [ main, develop ]
@@ -8,23 +7,41 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  build-and-test:
+  build-and-validate:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Download the code from the repository
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Step 2: Install Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
+        cache: 'npm'
+        # Tells the cache where to look for package files
+        cache-dependency-path: |
+          client/package-lock.json
+          server/package-lock.json
 
-    # Step 3: Run a basic diagnostic check
-    - name: Verify Environment
-      run: |
-        echo "Successfully checked out code!"
-        echo "Node version:" && node -v
-        echo "NPM version:" && npm -v
+    # 1. Validate Backend (Server)
+    - name: Install Server Dependencies
+      working-directory: server
+      run: npm ci
+
+    - name: Lint Server Code
+      working-directory: server
+      run: npm run lint
+
+    # 2. Validate Frontend (Client)
+    - name: Install Client Dependencies
+      working-directory: client
+      run: npm ci
+
+    - name: Lint Client Code
+      working-directory: client
+      run: npm run lint
+
+    - name: Build Client App
+      working-directory: client
+      run: npm run build
