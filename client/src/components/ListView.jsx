@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function ListView({ notes, onCreateNote, onSelectNote }) {
   const [searchQuery, setSearchQuery] = useState('');

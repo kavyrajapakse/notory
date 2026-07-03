@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ListView from './components/ListView.jsx';
 import EditorView from './components/EditorView';
 
@@ -9,7 +9,7 @@ export default function App() {
 
   const API_URL = 'http://localhost:5000/api/notes';
 
-  // Fetch all notes from the backend on load
+  // 1. Fetch all notes from the backend on load
   const fetchNotes = async () => {
     try {
       const response = await fetch(API_URL);
@@ -25,10 +25,11 @@ export default function App() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchNotes();
   }, []);
 
-  // Create or Update a note via API
+  // 2. Create or Update a note via API
   const handleSaveNote = async (noteData) => {
     try {
       let response;
@@ -68,7 +69,7 @@ export default function App() {
     }
   };
 
-  // Delete a note via API
+  // 3. Delete a note via API
   const handleDeleteNote = async (id) => {
     if (!window.confirm('Are you sure you want to delete this note permanently?')) {
       return;
@@ -91,7 +92,7 @@ export default function App() {
     }
   };
 
-  // Render the correct screen based on state
+  // 4. Render the correct screen based on state
   return (
     <div className="min-h-screen bg-zinc-950 font-sans">
       {currentPage === 'list' ? (
@@ -108,6 +109,7 @@ export default function App() {
         />
       ) : (
         <EditorView
+          key={activeNote ? activeNote.id : 'new'} // Forces React to reset form states when activeNote changes
           note={activeNote}
           onSave={handleSaveNote}
           onDelete={handleDeleteNote}

@@ -1,30 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react'; // Removed React and useEffect
 
 export default function EditorView({ note, onSave, onDelete, onBack }) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('General');
+  // Initialize state directly from props (No useEffect needed!)
+  const [title, setTitle] = useState(note?.title || '');
+  const [content, setContent] = useState(note?.content || '');
+  const [category, setCategory] = useState(note?.category || 'General');
   
   // AI States
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState('');
   const [aiActionType, setAiActionType] = useState(''); // 'title', 'summary', 'enhance'
-
-  // Load existing note details if we are in Edit Mode
-  useEffect(() => {
-    if (note) {
-      setTitle(note.title || '');
-      setContent(note.content || '');
-      setCategory(note.category || 'General');
-    } else {
-      // Clear fields if we are creating a new note
-      setTitle('');
-      setContent('');
-      setCategory('General');
-    }
-    setAiResult('');
-    setAiActionType('');
-  }, [note]);
 
   const handleSave = () => {
     if (!title.trim()) {
@@ -32,7 +17,7 @@ export default function EditorView({ note, onSave, onDelete, onBack }) {
       return;
     }
     onSave({
-      id: note?.id, // undefined for new notes
+      id: note?.id,
       title,
       content,
       category
