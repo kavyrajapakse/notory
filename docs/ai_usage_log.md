@@ -31,3 +31,29 @@ This log documents the collaboration between the developer and the AI coding ass
 * **DevOps Best Practices:** Learned the difference between client-side Firebase and `firebase-admin`, ensuring credential files are ignored using `.gitignore`.
 * **Path Resolution in Node:** Learned that using raw relative imports (e.g. `./key.json`) can cause crashes depending on where the terminal process is executed from. Using `path.resolve(__dirname, ...)` ensures files are resolved relative to the file location itself.
 * **Tailwind v4 Integration:** Explored the simplified Vite configuration of Tailwind v4.
+
+
+---
+
+## Day 4 (July 6, 2026) - AI Integration & Security Testing
+
+### 1. Prompts Used & Tasks Completed
+* **Prompt:** *"lets start day 4 work someone recommended me using gemini bc i have gemini pro not plus"*
+  * **Outcome:** Planned the integration of Gemini API routes for Title Generation, Summarization, and Writing Enhancement.
+* **Prompt:** *"its still loading i have a GROQ_API_KEY i used before in project how about we use that ?"*
+  * **Outcome:** Pivoted from the Google Gemini SDK to the **Groq SDK** using the `llama-3.1-8b-instant` model due to Google AI Studio registration delays.
+* **Prompt:** *"update the index.js as well ... Error: Cannot find module 'groq-sdk' ... ill compare and pull the request now ?"*
+  * **Outcome:** Separated the Express app setup (`app.js`) from the listener (`index.js`) to support standalone Jest unit tests, resolved path imports, and fixed missing dependency pushes.
+* **Prompt:** *"they lock it right nothing happens to security ?"*
+  * **Outcome:** Discussed security best practices for environment variables in cloud hosting environments (Vercel) and updated `firebase.js` to parse JSON strings at runtime rather than requiring static files.
+
+### 2. Key Code Generated
+* **AI Endpoints (Groq):** Integrated three Llama 3 endpoints (`/api/ai/title`, `/api/ai/summarize`, `/api/ai/enhance`) in `app.js`.
+* **Vercel Serverless Configurations:** Created `vercel.json` routing rules and refactored backend server startup checks.
+* **Jest Unit Tests:** Wrote `server/app.test.js` using `supertest` and created mock interfaces for `firebase-admin` to run tests without needing credentials in the CI pipeline.
+* **Dynamic API Routing:** Connected the React frontend to the deployed backend dynamically using Vite environment variables (`VITE_API_BASE_URL`).
+
+### 3. Lessons Learned
+* **API Redundancy & Flexibility:** Learned how to swap LLM providers (from Gemini to Groq) with minimal changes by encapsulating prompt logic.
+* **Mocking in CI Pipelines:** Discovered that database connections should be mocked in unit tests so that CI pipelines can build successfully without exposing secret credential files.
+* **Serverless Node Patterns:** Learned how to adapt an Express.js app to run as serverless functions on Vercel without active port listeners.
