@@ -36,7 +36,7 @@ The project is being developed as a Proof of Concept (POC) following professiona
 - Firebase Firestore
 
 ### AI
-- Google Gemini API
+- GROQ API
 
 ### DevOps
 - Git
