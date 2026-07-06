@@ -7,7 +7,8 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('list'); // 'list' or 'editor'
   const [activeNote, setActiveNote] = useState(null); // holds the note object being edited, or null for a new note
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/notes';
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+    const API_URL = `${API_BASE_URL}/api/notes`;
 
   // 1. Fetch all notes from the backend on load
   const fetchNotes = async () => {
@@ -108,9 +109,10 @@ export default function App() {
           }}
         />
       ) : (
-        <EditorView
+                <EditorView
           key={activeNote ? activeNote.id : 'new'} // Forces React to reset form states when activeNote changes
           note={activeNote}
+          apiBaseUrl={API_BASE_URL} // <-- Pass the base URL to the editor
           onSave={handleSaveNote}
           onDelete={handleDeleteNote}
           onBack={() => {

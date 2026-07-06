@@ -1,6 +1,6 @@
 import { useState } from 'react'; // Removed React and useEffect
 
-export default function EditorView({ note, onSave, onDelete, onBack }) {
+export default function EditorView({ note, apiBaseUrl, onSave, onDelete, onBack }) {
   // Initialize state directly from props (No useEffect needed!)
   const [title, setTitle] = useState(note?.title || '');
   const [content, setContent] = useState(note?.content || '');
@@ -39,16 +39,17 @@ export default function EditorView({ note, onSave, onDelete, onBack }) {
       let endpoint = '';
       let bodyData = {};
 
-      if (actionType === 'title') {
-        endpoint = 'http://localhost:5000/api/ai/title';
-        bodyData = { content };
-      } else if (actionType === 'summary') {
-        endpoint = 'http://localhost:5000/api/ai/summarize';
-        bodyData = { title, content };
-      } else if (actionType === 'enhance') {
-        endpoint = 'http://localhost:5000/api/ai/enhance';
-        bodyData = { content };
-      }
+            const base = apiBaseUrl || 'http://localhost:5000';
+   if (actionType === 'title') {
+     endpoint = `${base}/api/ai/title`;
+     bodyData = { content };
+   } else if (actionType === 'summary') {
+     endpoint = `${base}/api/ai/summarize`;
+     bodyData = { title, content };
+   } else if (actionType === 'enhance') {
+     endpoint = `${base}/api/ai/enhance`;
+     bodyData = { content };
+   }
 
       const response = await fetch(endpoint, {
         method: 'POST',
