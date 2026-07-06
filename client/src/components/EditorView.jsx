@@ -24,7 +24,7 @@ export default function EditorView({ note, onSave, onDelete, onBack }) {
     });
   };
 
-  // Placeholder functions for AI endpoints (we will connect these to the backend soon!)
+     // Connect AI actions to our backend Groq endpoints
   const handleAIAction = async (actionType) => {
     if (!content.trim()) {
       alert('Write some content first before using AI tools!');
@@ -36,34 +36,54 @@ export default function EditorView({ note, onSave, onDelete, onBack }) {
     setAiResult('');
 
     try {
-      // Temporary simulated responses until we hook up the backend
-      setTimeout(() => {
-        if (actionType === 'title') {
-          setAiResult(`✨ Suggested Title: Note on ${category} - ${new Date().toLocaleDateString()}`);
-        } else if (actionType === 'summary') {
-          setAiResult(`📝 Summary:\n• User is working on ${title || 'unnamed note'}\n• Content length: ${content.length} characters.`);
-        } else if (actionType === 'enhance') {
-          setAiResult(`✨ Polished Version:\n${content.trim()} (Writing style enhanced for professional tone).`);
-        }
-        setAiLoading(false);
-      }, 1500);
+      let endpoint = '';
+      let bodyData = {};
+
+      if (actionType === 'title') {
+        endpoint = 'http://localhost:5000/api/ai/title';
+        bodyData = { content };
+      } else if (actionType === 'summary') {
+        endpoint = 'http://localhost:5000/api/ai/summarize';
+        bodyData = { title, content };
+      } else if (actionType === 'enhance') {
+        endpoint = 'http://localhost:5000/api/ai/enhance';
+        bodyData = { content };
+      }
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to communicate with AI server');
+      }
+
+      const data = await response.json();
+
+      // Set the clean result returned by our Groq backend
+      if (actionType === 'title') {
+        setAiResult(data.title);
+      } else if (actionType === 'summary') {
+        setAiResult(data.summary);
+      } else if (actionType === 'enhance') {
+        setAiResult(data.enhancedText);
+      }
     } catch (error) {
       console.error(error);
-      setAiResult('Error communicating with AI Assistant.');
+      setAiResult('Error: Failed to reach AI helper. Make sure your server is running.');
+    } finally {
       setAiLoading(false);
     }
   };
 
   const handleApplyTitle = () => {
-    // Strip the suggested title prefix if present
-    const cleanTitle = aiResult.replace('✨ Suggested Title: ', '');
-    setTitle(cleanTitle);
+    setTitle(aiResult); // Replaces the title with the AI title directly
   };
 
   const handleApplyContent = () => {
-    // Strip the polished prefix if present
-    const cleanContent = aiResult.replace('✨ Polished Version:\n', '');
-    setContent(cleanContent);
+    setContent(aiResult); // Replaces the editor content with the enhanced version directly
   };
 
   return (
@@ -144,12 +164,12 @@ export default function EditorView({ note, onSave, onDelete, onBack }) {
             <div className="flex items-center gap-2">
               <span className="text-xl">🔮</span>
               <h2 className="text-lg font-bold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                Gemini AI Helper
+                GROQ AI Helper
               </h2>
             </div>
 
             <p className="text-zinc-500 text-xs leading-relaxed">
-              Use Gemini AI to quickly generate catchy titles, compile summaries, or enhance your writing style.
+              Use GROQ AI to quickly generate catchy titles, compile summaries, or enhance your writing style.
             </p>
 
             {/* AI Action Buttons */}
@@ -183,7 +203,7 @@ export default function EditorView({ note, onSave, onDelete, onBack }) {
                 {aiLoading ? (
                   <div className="flex flex-col items-center justify-center gap-3 py-6">
                     <div className="w-6 h-6 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span className="text-xs text-zinc-500">Gemini is thinking...</span>
+                    <span className="text-xs text-zinc-500">GROQ is thinking...</span>
                   </div>
                 ) : (
                   <>
