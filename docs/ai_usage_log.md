@@ -64,7 +64,7 @@ This log documents the collaboration between the developer and the AI coding ass
 * **Prompt:** *"lets start day 4 work someone recommended me using gemini bc i have gemini pro not plus"*
   * **Outcome:** Planned the integration of Gemini API routes for Title Generation, Summarization, and Writing Enhancement.
 * **Prompt:** *"its still loading i have a GROQ_API_KEY i used before in project how about we use that ?"*
-  * **Outcome:** Pivoted from the Google Gemini SDK to the **Groq SDK** using the `llama-3.1-8b-instant` model due to Google AI Studio registration delays.
+  * **Outcome:** Changed from the Google Gemini SDK to the **Groq SDK** using the `llama-3.1-8b-instant` model due to Google AI Studio registration delays.
 * **Prompt:** *"update the index.js as well ... Error: Cannot find module 'groq-sdk' ... ill compare and pull the request now ?"*
   * **Outcome:** Separated the Express app setup (`app.js`) from the listener (`index.js`) to support standalone Jest unit tests, resolved path imports, and fixed missing dependency pushes.
 * **Prompt:** *"they lock it right nothing happens to security ?"*
