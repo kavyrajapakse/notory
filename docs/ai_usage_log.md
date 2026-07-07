@@ -1,5 +1,28 @@
 # AI Usage Log - NOTORY
 
+## Day 1 (June 30, 2026) - Project Planning & Conceptualization
+
+### 1. Prompts Used & Tasks Completed
+* **Prompt:** Initial scoping of the Proof of Concept.
+  * **Outcome:** Defined the project goals for **NOTORY** (an AI note-taking app) and mapped out the required tech stack: React, Tailwind CSS, Node.js, Express, Firebase Firestore, and a Generative AI API.
+
+### 2. Key Decisions Made
+* Chose a backend-integrated database setup (Option A) to prevent security exposure of database credentials and LLM keys on the client-side.
+
+---
+
+## Day 2 (July 2, 2026) - Repository Setup & CI Foundation
+
+### 1. Prompts Used & Tasks Completed
+* **Prompt:** *"i have added the license but i cant see it in my vs also in my vs the updates arent pushed yet give me instruction to do dont create anthing"*
+  * **Outcome:** Synced the MIT License from GitHub, configured a custom `.gitignore` to protect node modules and `.env` files, and wrote a professional `README.md`.
+* **Prompt:** Configuration of the initial CI pipeline.
+  * **Outcome:** Switched to the `develop` branch and configured `.github/workflows/ci.yml` to verify the Node.js environment automatically on every git push.
+
+### 2. Key Code Generated
+* Created the base `.gitignore` and `README.md` templates.
+* Created the initial `.github/workflows/ci.yml` runner script.
+
 This log documents the collaboration between the developer and the AI coding assistant (Antigravity) during the development of NOTORY on Day 3. 
 **Date:** 02/03 July 2026
 
